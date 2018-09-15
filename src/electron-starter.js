@@ -1,6 +1,7 @@
 const electron = require('electron');
 // Module to control application life.
 const app = electron.app;
+const globalShortcut = electron.globalShortcut;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 
@@ -13,14 +14,28 @@ let mainWindow;
 
 function createWindow() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({width: 800, height: 600});
-
+    mainWindow = new BrowserWindow({
+        width: 500,
+        height: 600,
+        frame: false,
+        // vibrancy: 'ultra-dark',
+        alwaysOnTop: true,
+        maximizable: false,
+        minimizable: false,
+        fullscreenable: false,
+        skipTaskbar: true,
+        radii: [5, 5, 5, 5],
+        titleBarStyle: 'hiddenInset',
+        icon: __dirname + 'assets/images/logo.png',
+        transparent: true,
+    });
+    mainWindow.setResizable(false);
     // and load the index.html of the app.
     const startUrl = process.env.ELECTRON_START_URL || url.format({
-            pathname: path.join(__dirname, '/../build/index.html'),
-            protocol: 'file:',
-            slashes: true
-        });
+        pathname: path.join(__dirname, '/../build/index.html'),
+        protocol: 'file:',
+        slashes: true
+    });
     mainWindow.loadURL(startUrl);
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
@@ -32,6 +47,9 @@ function createWindow() {
         // when you should delete the corresponding element.
         mainWindow = null
     })
+    // mainWindow.on('blur', function () {
+    //     mainWindow.hide();
+    // })
 }
 
 // This method will be called when Electron has finished
@@ -58,3 +76,17 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+console.log('well');
+app.on('ready', () => {
+    createWindow;
+    const ret = globalShortcut.register('CommandOrControl+Space', () => {
+        console.log('CommandOrControl+X is pressed');
+        mainWindow.show();
+    });
+    if (!ret) {
+        console.log('registration failed');
+    }
+
+    // Check whether a shortcut is registered.
+    console.log(globalShortcut.isRegistered('CommandOrControl+X'));
+})

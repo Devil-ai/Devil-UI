@@ -4,13 +4,29 @@ const app = electron.app;
 const globalShortcut = electron.globalShortcut;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
-
+const HotwordDetector = require('node-hotworddetector');
 const path = require('path');
 const url = require('url');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+
+const detectorData = {
+    resource: '../node_modules/snowboy/resources/common.res'
+};
+const modelData = [
+    {
+        file: './Hi_devil.pmdl',
+        hotwords: 'Hi Devil',
+        sensitivity: '0.5'
+    }
+];
+const recorderData = {
+    audioGain: 2,
+};
+const logger = console;
+let hotwordDetector =  new HotwordDetector(detectorData, modelData, recorderData, logger);
 
 function createWindow() {
     // Create the browser window.
@@ -26,8 +42,8 @@ function createWindow() {
         skipTaskbar: true,
         radii: [5, 5, 5, 5],
         titleBarStyle: 'hiddenInset',
-        icon: __dirname + 'assets/images/logo.png',
-        transparent: true,
+        icon: __dirname + '/assets/images/logo.png',
+        backgroundColor: '#000000'
     });
     mainWindow.setResizable(false);
     // and load the index.html of the app.
@@ -72,13 +88,14 @@ app.on('activate', function () {
     if (mainWindow === null) {
         createWindow()
     }
+    
 });
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-console.log('well');
 app.on('ready', () => {
     createWindow;
+
     const ret = globalShortcut.register('CommandOrControl+Space', () => {
         console.log('CommandOrControl+X is pressed');
         mainWindow.show();
@@ -86,7 +103,25 @@ app.on('ready', () => {
     if (!ret) {
         console.log('registration failed');
     }
-
     // Check whether a shortcut is registered.
-    console.log(globalShortcut.isRegistered('CommandOrControl+X'));
+    // hotwordDetector.start();
+    // hotwordDetector.on('error', function (error) {
+    //     console.error('hotwordDetector: ' + error);
+    // });
+    // // Triggered when a hotword has been detected.
+    // hotwordDetector.on('hotword', function (index, hotword, buffer) {
+    //     console.log('hotwordDetector: Hotword detected: ' + hotword);
+    //     mainWindow.show();
+    // });
+    // console.log(globalShortcut.isRegistered('CommandOrControl+X'));
 })
+
+//   // Triggered when there is no audible sound being recorded.
+//   hotwordDetector.on('silence', function() {
+//     console.log('hotwordDetector: silence');
+//   });
+//   // Triggered when there is audible sound being recorded.
+//   hotwordDetector.on('sound', function(buffer) {
+//     // Buffer is the most recent section from the audio buffer.
+//     console.log('hotwordDetector: sound: ' + buffer);
+//   });

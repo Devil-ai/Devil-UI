@@ -1,22 +1,29 @@
 import React, { Component } from 'react';
-import anim from '../assets/images/1.gif';
 import logo from '../assets/images/logo.png';
 import settings from '../assets/images/settings.png';
 import close from '../assets/images/close.png';
-import { Container, Row, Col } from 'reactstrap';
+import { Input, Container, Row, Col , Button} from 'reactstrap';
 import './Grid.css';
-
+// import mic from '../assets/images/mic.png';
+import GifHandler from './GifHandler';
 const windowRemote = window.require('electron');
 
 class Grid extends Component {
-   constructor() {
+  constructor() {
     super();
     this.close = this.close.bind(this);
 
     this.win = windowRemote.remote.getCurrentWindow();
-    this.win.on('blur',  () => {
+    this.win.on('blur', () => {
+      this.setState({ status: "sleeping" });
       this.win.hide();
     });
+    this.win.on('focus', () => {
+      this.setState({ status: "listening" });
+    });
+    this.state = {
+      status: "sleeping",
+    }
   }
   close() {
     this.win.hide();
@@ -26,7 +33,7 @@ class Grid extends Component {
       <div id="App">
         <img src={settings} alt="settings" id={"settingsButton"} height={22} width={22} />
         <img src={close} alt="close" id={"closeButton"} height={22} width={22} onClick={() => this.close()} />
-        <Container>
+        <Container id={"APP"}>
           <Row>
             <Col><br /><img src={logo} alt="devil" id={"anim"} height={100} width={100} /> </Col>
           </Row>
@@ -34,10 +41,18 @@ class Grid extends Component {
             <Col><h2 id="logo-text">Devil</h2></Col>
           </Row>
           <Row>
-            <Col> <img src={anim} alt="devil" id={"anim"} /></Col>
+          </Row>
+          <Row>
+            <Col><GifHandler status={this.state.status} /></Col>
+          </Row>
+          <Row>
+            <Col>
+                <Input id={"inputarea"} placeholder="Speak or type here" />
+                {/* <Button color="primary" id={"micButton"} size="sm"><img src={mic} alt="mic" id={"micIcon"} /></Button> */}
+            </Col>
           </Row>
         </Container>
-      </div>
+      </div >
     );
   }
 }

@@ -32,7 +32,7 @@ function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
         width: 500,
-        height: 600,
+        height: 800,
         frame: false,
         // vibrancy: 'ultra-dark',
         alwaysOnTop: true,
@@ -113,15 +113,15 @@ app.on('ready', () => {
     //     console.log('hotwordDetector: Hotword detected: ' + hotword);
     //     mainWindow.show();
     // });
-    // console.log(globalShortcut.isRegistered('CommandOrControl+X'));
+    // hotwordDetector.on('silence', function() {
+    //     console.log('hotwordDetector: silence');
+    //   });
+    //   // Triggered when there is audible sound being recorded.
+    //   hotwordDetector.on('sound', function(buffer) {
+    //     // Buffer is the most recent section from the audio buffer.
+    //     console.log('hotwordDetector: sound: ' + buffer);
+    //   });
+    console.log(globalShortcut.isRegistered('CommandOrControl+X'));
 })
 
 //   // Triggered when there is no audible sound being recorded.
-//   hotwordDetector.on('silence', function() {
-//     console.log('hotwordDetector: silence');
-//   });
-//   // Triggered when there is audible sound being recorded.
-//   hotwordDetector.on('sound', function(buffer) {
-//     // Buffer is the most recent section from the audio buffer.
-//     console.log('hotwordDetector: sound: ' + buffer);
-//   });

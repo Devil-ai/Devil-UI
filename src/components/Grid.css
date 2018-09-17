@@ -41,3 +41,36 @@
   color: cyan;
   width: 86%;
 }
+
+.chatarea{
+  /* display: flex; */
+  max-height: 350px;
+
+  overflow-y: scroll;
+  /* flex: 1 1 0; */
+  /* flex-direction: column; */
+  background-color: black;
+  /* flex-direction: column; */
+  -ms-overflow-style: scrollbar;
+    /* -webkit-app-region:drag; */
+}
+
+ /* width */
+ ::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(24, 22, 22);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+} 

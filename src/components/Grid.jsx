@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import logo from '../assets/images/logo.png';
 import settings from '../assets/images/settings.png';
 import close from '../assets/images/close.png';
-import { Input, Container, Row, Col , Button} from 'reactstrap';
+import { Input, Container, Row, Col } from 'reactstrap';
 import './Grid.css';
 // import mic from '../assets/images/mic.png';
 import GifHandler from './GifHandler';
+import Chat from './Chat';
+
 const windowRemote = window.require('electron');
 
 class Grid extends Component {
@@ -38,20 +40,18 @@ class Grid extends Component {
             <Col><br /><img src={logo} alt="devil" id={"anim"} height={100} width={100} /> </Col>
           </Row>
           <Row>
-            <Col><h2 id="logo-text">Devil</h2></Col>
+            <Col><h2 id="logo-text">Devil.Ai</h2></Col>
           </Row>
           <Row>
+            <Col>
+              <Chat />
+            </Col>
           </Row>
           <Row>
             <Col><GifHandler status={this.state.status} /></Col>
           </Row>
-          <Row>
-            <Col>
-                <Input id={"inputarea"} placeholder="Speak or type here" />
-                {/* <Button color="primary" id={"micButton"} size="sm"><img src={mic} alt="mic" id={"micIcon"} /></Button> */}
-            </Col>
-          </Row>
         </Container>
+        <Input id={"inputarea"} placeholder="Speak or type here" />
       </div >
     );
   }

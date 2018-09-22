@@ -1,17 +1,18 @@
 const electron = require('electron');
-// Module to control application life.
 const app = electron.app;
 const globalShortcut = electron.globalShortcut;
-// Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 const HotwordDetector = require('node-hotworddetector');
 const path = require('path');
 const url = require('url');
-
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+const exec = require('child_process').exec;
 let mainWindow;
-
+exec("export GOOGLE_APPLICATION_CREDENTIALS=\"../devil-36d63-5166a7175387.json\"", function (err, stdout, stderr) {
+    if (err) {
+        // should have err.code here?  
+    }
+    console.log(stdout);
+});
 const detectorData = {
     resource: '../node_modules/snowboy/resources/common.res'
 };
@@ -26,8 +27,7 @@ const recorderData = {
     audioGain: 2,
 };
 const logger = console;
-// let hotwordDetecto   r =  new HotwordDetector(detectorData, modelData, recorderData, logger);
-
+// let hotwordDetector =  new HotwordDetector(detectorData, modelData, recorderData, logger);
 function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
@@ -88,7 +88,7 @@ app.on('activate', function () {
     if (mainWindow === null) {
         createWindow()
     }
-    
+
 });
 
 // In this file you can include the rest of your app's specific main process

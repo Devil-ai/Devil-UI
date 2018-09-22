@@ -29,6 +29,7 @@
   position: absolute;
   top: 12px;
   right: 16px;
+  color: red;
 }
 
 #inputarea{
@@ -43,34 +44,61 @@
 }
 
 .chatarea{
-  /* display: flex; */
+  /* border : 3px solid  #555; */
+  border-radius:  10px;
+  padding : 13px;
   max-height: 350px;
-
+  min-height: 350px;
   overflow-y: scroll;
-  /* flex: 1 1 0; */
-  /* flex-direction: column; */
   background-color: black;
-  /* flex-direction: column; */
   -ms-overflow-style: scrollbar;
-    /* -webkit-app-region:drag; */
+  font-size: 18px;
+  background: #111;
 }
-
- /* width */
- ::-webkit-scrollbar {
+.system{
+  /* border: 1px solid #555;
+  background: #555; */
+  max-width: 50%;
+  color: #fff;
+  border-radius: 20px;
+  padding-top : 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 4px;
+  text-align: justify;
+  margin-right: 50%;
+  margin-bottom: 5px;
+  word-wrap: break-word;
+}
+.user{
+  background: #777;
+  border: 1px solid #777;
+  max-width: 50%;
+  color: #fff;
+  border-radius: 20px;
+  float: right;
+  padding-top : 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 4px;
+  text-align: justify;
+  margin-left: 50%;
+  margin-bottom: 5px;
+  word-wrap: break-word;
+}
+.hidden-right{
+  display: none;
+  float: right;
+}
+::-webkit-scrollbar {
   width: 10px;
 }
-
-/* Track */
 ::-webkit-scrollbar-track {
   background: #000000;
 }
-
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: rgb(24, 22, 22);
 }
-
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 } 

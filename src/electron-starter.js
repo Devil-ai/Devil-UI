@@ -19,14 +19,14 @@ const modelData = [
     {
         file: './Hi_devil.pmdl',
         hotwords: 'Hi Devil',
-        sensitivity: '0.5'
+        sensitivity: '0.3'
     }
 ];
 const recorderData = {
     audioGain: 2,
 };
 const logger = console;
-let hotwordDetector =  new HotwordDetector(detectorData, modelData, recorderData, logger);
+// let hotwordDetecto   r =  new HotwordDetector(detectorData, modelData, recorderData, logger);
 
 function createWindow() {
     // Create the browser window.
@@ -103,7 +103,7 @@ app.on('ready', () => {
     if (!ret) {
         console.log('registration failed');
     }
-    // Check whether a shortcut is registered.
+    // // Check whether a shortcut is registered.
     // hotwordDetector.start();
     // hotwordDetector.on('error', function (error) {
     //     console.error('hotwordDetector: ' + error);
@@ -113,7 +113,7 @@ app.on('ready', () => {
     //     console.log('hotwordDetector: Hotword detected: ' + hotword);
     //     mainWindow.show();
     // });
-    // hotwordDetector.on('silence', function() {
+    // // hotwordDetector.on('silence', function() {
     //     console.log('hotwordDetector: silence');
     //   });
     //   // Triggered when there is audible sound being recorded.

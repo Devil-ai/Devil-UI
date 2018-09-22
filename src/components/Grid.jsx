@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from '../assets/images/logo.png';
 import settings from '../assets/images/settings.png';
 import close from '../assets/images/close.png';
-import { Input, Container, Row, Col } from 'reactstrap';
+import { Input, Container, Row, Col, Button } from 'reactstrap';
 import './Grid.css';
 // import mic from '../assets/images/mic.png';
 import GifHandler from './GifHandler';
@@ -14,7 +14,7 @@ class Grid extends Component {
   constructor() {
     super();
     this.close = this.close.bind(this);
-
+    this.changestate = this.changestate.bind(this);
     this.win = windowRemote.remote.getCurrentWindow();
     this.win.on('blur', () => {
       this.setState({ status: "sleeping" });
@@ -26,6 +26,16 @@ class Grid extends Component {
     this.state = {
       status: "sleeping",
     }
+  }
+  changestate() {
+    if (this.state.status == "listening") {
+      this.setState({ status: "sleeping" });
+    }
+    else {
+      this.setState({ status: "listening" });
+    }
+
+
   }
   close() {
     this.win.hide();
@@ -40,11 +50,12 @@ class Grid extends Component {
             <Col><br /><img src={logo} alt="devil" id={"anim"} height={100} width={100} /> </Col>
           </Row>
           <Row>
-            <Col><h2 id="logo-text">Devil.Ai</h2></Col>
+            <Col><h2 id="logo-text">Devil.ai</h2></Col>
           </Row>
           <Row>
             <Col>
-              <Chat />
+              <Chat status={this.state.status} />
+              {/* <Button onClick={this.changestate} >lol</Button> */}
             </Col>
           </Row>
           <Row>

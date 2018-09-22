@@ -1,30 +1,64 @@
 import React, { Component } from 'react';
 // import anim from '../assets/images/1.gif';
 import './Grid.css';
-// import { Container, Jumbotron } from 'reactstrap';
+// import { Container, Row, Col } from 'reactstrap';
 
 class Chat extends Component {
-    // constructor() {
-    //     super();
-    //      this.state = {
-    //          status : "sleeping"
-    //      }
-    // }
-    //    componentWillReceiveProps(nextProps){
-    //        this.setState({status: nextProps.status});
-    //    }
+    constructor() {
+        super();
+        this.updateScroll = this.updateScroll.bind(this);
+        this.state = {
+            status: "sleeping"
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState({ status: nextProps.status });
+        this.updateScroll();
+    }
+
+    updateScroll() {
+        var element = document.getElementsByClassName("chatarea");
+        element.scrollTop = element.scrollHeight;
+    }
     render() {
-        // let gif;
-        // <img src={anim} alt="devil" id={"anim"} /><
-        // console.log(this.state.status);
         return (
             <div class="chatarea">
-                <h1 >This will house conversations</h1>
-                <p>This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
-                <h1 >This will house conversations</h1>
-                <p>This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
-                <h1 >This will house conversations</h1>
-                <p>This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+                <div class="system">
+                    <strong>Devil: </strong>
+                    Aur be gandu
+                </div>
+                <div class="user">
+                    <strong>Utkarsh: </strong>
+                    Muh me lega?
+                </div>
+                {/* <div class="system">
+                    <strong>Devil: </strong>
+                    Noi Noi Noi Noi Noi noi noi noi noi noi
+                </div>
+                <div class="user">
+                    <strong>Utkarsh: </strong>
+                    HAHAHAHAHAHAHAHAHAH
+                </div>
+                <div class="user">
+                    <strong>Utkarsh: </strong>
+                    Devil chutiya hai
+                </div>
+                <div class="system">
+                    <strong>Devil: </strong>
+                    Sorry
+                    </div>
+                <div class="user">
+                    <strong>Utkarsh: </strong>
+                    Devil chutiya hai
+                </div>
+                <div class="system">
+                    <strong>Devil: </strong>
+                    Noi Noi Noi Noi Noi noi noi noi noi noi
+                </div>
+                <div class="user">
+                    <strong>Utkarsh: </strong>
+                    HAHAHAHAHAHAHAHAHAH
+                </div> */}
             </div>
         );
     }

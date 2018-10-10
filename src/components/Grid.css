@@ -58,7 +58,7 @@
 .system{
   /* border: 1px solid #555;
   background: #555; */
-  max-width: 50%;
+  max-width: 60%;
   color: #fff;
   border-radius: 20px;
   padding-top : 4px;
@@ -66,14 +66,14 @@
   padding-right: 10px;
   padding-bottom: 4px;
   text-align: justify;
-  margin-right: 50%;
+  margin-right: 60%;
   margin-bottom: 5px;
   word-wrap: break-word;
 }
 .user{
   background: #777;
   border: 1px solid #777;
-  max-width: 50%;
+  max-width: 60%;
   color: #fff;
   border-radius: 20px;
   float: right;
@@ -82,7 +82,7 @@
   padding-right: 10px;
   padding-bottom: 4px;
   text-align: justify;
-  margin-left: 50%;
+  margin-left: 60%;
   margin-bottom: 5px;
   word-wrap: break-word;
 }

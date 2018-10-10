@@ -33,7 +33,6 @@ class GifHandler extends Component {
                 gif = <img src={rain} alt="devil" id={"anim"} />;
         }
         // <img src={anim} alt="devil" id={"anim"} /><
-        console.log(this.state.status);
         return gif;
     }
 }

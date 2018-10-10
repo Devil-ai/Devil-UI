@@ -2,31 +2,26 @@ const electron = require('electron');
 const app = electron.app;
 const globalShortcut = electron.globalShortcut;
 const BrowserWindow = electron.BrowserWindow;
-const HotwordDetector = require('node-hotworddetector');
+// const HotwordDetector = require('node-hotworddetector');
 const path = require('path');
 const url = require('url');
-const exec = require('child_process').exec;
+
 let mainWindow;
-exec("export GOOGLE_APPLICATION_CREDENTIALS=\"../devil-36d63-5166a7175387.json\"", function (err, stdout, stderr) {
-    if (err) {
-        // should have err.code here?  
-    }
-    console.log(stdout);
-});
-const detectorData = {
-    resource: '../node_modules/snowboy/resources/common.res'
-};
-const modelData = [
-    {
-        file: './Hi_devil.pmdl',
-        hotwords: 'Hi Devil',
-        sensitivity: '0.3'
-    }
-];
-const recorderData = {
-    audioGain: 2,
-};
-const logger = console;
+
+// const detectorData = {
+//     resource: '../node_modules/snowboy/resources/common.res'
+// };
+// const modelData = [
+//     {
+//         file: './Hi_devil.pmdl',
+//         hotwords: 'Hi Devil',
+//         sensitivity: '0.3'
+//     }
+// ];
+// const recorderData = {
+//     audioGain: 2,
+// };
+// const logger = console;
 // let hotwordDetector =  new HotwordDetector(detectorData, modelData, recorderData, logger);
 function createWindow() {
     // Create the browser window.
@@ -124,4 +119,4 @@ app.on('ready', () => {
     console.log(globalShortcut.isRegistered('CommandOrControl+X'));
 })
 
-//   // Triggered when there is no audible sound being recorded.
+//   Triggered when there is no audible sound being recorded.

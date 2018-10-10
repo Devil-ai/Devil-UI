@@ -1,18 +1,44 @@
 import React, { Component } from 'react';
-// import anim from '../assets/images/1.gif';
 import './Grid.css';
-// import { Container, Row, Col } from 'reactstrap';
 
 class Chat extends Component {
+
     constructor() {
         super();
         this.updateScroll = this.updateScroll.bind(this);
         this.state = {
-            status: "sleeping"
+            status: "sleeping",
+            update: false,
         }
+        this.chat = [];
+        this.dummyData = {
+            isFinal: false,
+            isUser: true,
+            text: ""
+        };
     }
+
     componentWillReceiveProps(nextProps) {
+        if (nextProps.user !== {}) {
+            if (nextProps.user.isUser === true) {
+                if (nextProps.user.isFinal === true && nextProps.user.text !== "") {
+                    this.chat.push(nextProps.user);
+                    this.chat.push(this.dummyData);
+                } else {
+                    this.chat[this.chat.length - 1] = nextProps.user;
+                }
+            }
+        }
+        if (nextProps.system !== {}) {
+            if (nextProps.system.isUser === false) {
+                this.chat.push(nextProps.system);
+                this.chat.push(this.dummyData);
+            }
+        }
         this.setState({ status: nextProps.status });
+    }
+
+    componentDidUpdate() {
         this.updateScroll();
     }
 
@@ -20,45 +46,31 @@ class Chat extends Component {
         var element = document.getElementsByClassName("chatarea");
         element.scrollTop = element.scrollHeight;
     }
+
     render() {
+        let chatItems = [];
+        for (const element of this.chat) {
+            if (typeof (element) !== "undefined") {
+                if (element.isUser === true) {
+                    if (element.isFinal === true) {
+                        chatItems.push(<div class="user" >
+                            <strong>Utkarsh: </strong>
+                            {element.text}
+                        </div >);
+                    } else {
+                        this.chat[this.chat.length - 1].text = element.text;
+                    }
+                } else if (element.isUser === false) {
+                    chatItems.push(<div class="system" >
+                        <strong>Devil: </strong>
+                        {element.text}
+                    </div >);
+                }
+            }
+        }
         return (
             <div class="chatarea">
-                <div class="system">
-                    <strong>Devil: </strong>
-                    Aur be gandu
-                </div>
-                <div class="user">
-                    <strong>Utkarsh: </strong>
-                    Muh me lega?
-                </div>
-                {/* <div class="system">
-                    <strong>Devil: </strong>
-                    Noi Noi Noi Noi Noi noi noi noi noi noi
-                </div>
-                <div class="user">
-                    <strong>Utkarsh: </strong>
-                    HAHAHAHAHAHAHAHAHAH
-                </div>
-                <div class="user">
-                    <strong>Utkarsh: </strong>
-                    Devil chutiya hai
-                </div>
-                <div class="system">
-                    <strong>Devil: </strong>
-                    Sorry
-                    </div>
-                <div class="user">
-                    <strong>Utkarsh: </strong>
-                    Devil chutiya hai
-                </div>
-                <div class="system">
-                    <strong>Devil: </strong>
-                    Noi Noi Noi Noi Noi noi noi noi noi noi
-                </div>
-                <div class="user">
-                    <strong>Utkarsh: </strong>
-                    HAHAHAHAHAHAHAHAHAH
-                </div> */}
+                {chatItems}
             </div>
         );
     }

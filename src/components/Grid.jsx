@@ -6,7 +6,7 @@ import { Input, Container, Row, Col, Form } from 'reactstrap';
 import './Grid.css';
 import GifHandler from './GifHandler';
 import Chat from './Chat';
-// import getResponce from '../API/DialogFlowAPI';
+import getResponce from '../API/DialogFlowAPI';
 const process = window.require('process');
 const windowRemote = window.require('electron');
 
@@ -80,7 +80,7 @@ class Grid extends Component {
     this.chat = {}
   }
   changestate() {
-    if (this.state.status == "listening") {
+    if (this.state.status === "listening") {
       this.setState({ status: "sleeping" });
     }
     else {
@@ -111,10 +111,10 @@ class Grid extends Component {
     this.setState({ value: "" });
   }
   render() {
-    // if (this.state.status === 'listening') {
-    //   getResponce.streamingMicDetectIntent();
-    //   getResponce.getResponce("turn on wi-fi");
-    // }
+    if (this.state.status === 'listening') {
+      getResponce.streamingMicDetectIntent();
+      // getResponce.getResponce("turn on wi-fi");
+    }
     return (
       <div id="App">
         <Container id={"APP"}>

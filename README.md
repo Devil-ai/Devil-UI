@@ -14,3 +14,8 @@ Requires Node ver 8.9 or above
 4. `sudo ldconfig`
 5. `sudo apt install sox`
 6. `./node_modules/.bin/electron-rebuild --pre-gyp-fix`
+
+### build 
+######  Use clang to rebuild gprc for arch 
+1. `export CC=/usr/bin/clang`
+2. `export CXX=/usr/bin/clang++`

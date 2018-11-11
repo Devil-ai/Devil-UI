@@ -7,12 +7,9 @@ import './Grid.css';
 import GifHandler from './GifHandler';
 import Chat from './Chat';
 import getResponce from '../API/DialogFlowAPI';
+import store from "../Store"
 const process = window.require('process');
 const windowRemote = window.require('electron');
-
-const projectId = 'devil-36d63';
-const sessionId = 'AIzaSyBiJcs0FYCHTc5C95L29lfVuOWgE1GPqVg';
-const languageCode = 'en-US';
 
 class Grid extends Component {
   constructor() {
@@ -22,7 +19,6 @@ class Grid extends Component {
     this.changestate = this.changestate.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.getResponce = this.getResponce.bind(this);
 
     this.win = windowRemote.remote.getCurrentWindow();
 
@@ -30,88 +26,86 @@ class Grid extends Component {
 
     this.chat = {};
     this.system = {};
+
     this.win.on('blur', () => {
-      this.setState({ status: "sleeping" });
+      // this.setState({ status: "sleeping" });
+      store.dispatch({
+        origin: "GRID",
+        type: "CURRSTATE",
+        status: "sleeping"
+      });
       this.win.hide();
     });
     this.win.on('focus', () => {
-      this.setState({ status: "listening" });
+      // this.setState({ status: "listening" });
+      store.dispatch({
+        origin: "GRID",
+        type: "CURRSTATE",
+        status: "listening"
+      });
     });
 
-    this.state = {
-      status: "sleeping",
-      value: '',
-    }
   }
-  getResponce(query) {
-    const dialogflow = window.require('dialogflow');
-    const sessionClient = new dialogflow.SessionsClient();
-    // Define session path
-    const sessionPath = sessionClient.sessionPath(projectId, sessionId);
-    const request = {
-      session: sessionPath,
-      queryInput: {
-        text: {
-          text: query,
-          languageCode: languageCode,
-        },
-      },
-    };
 
-    sessionClient
-      .detectIntent(request)
-      .then(responses => {
-        console.log('Detected intent');
-        const result = responses[0].queryResult;
-        console.log(result.fulfillmentMessages[0].text.text[0]);
-        this.system = {
-          isUser: false,
-          isFinal: true,
-          text: result.fulfillmentMessages[0].text.text[0],
-        }
-        this.setState({value: " "});
-        this.system = {};
-      })
-      .catch(err => {
-        console.error('ERROR:', err);
-      });
-  }
   componentDidUpdate() {
     this.chat = {}
   }
+
   changestate() {
     if (this.state.status === "listening") {
-      this.setState({ status: "sleeping" });
+      // this.setState({ status: "sleeping" });
+      store.dispatch({
+        origin: "GRID",
+        type: "CURRSTATE",
+        status: "sleeping"
+      });
     }
     else {
-      this.setState({ status: "listening" });
+      // this.setState({ status: "listening" });
+      store.dispatch({
+        origin: "GRID",
+        type: "CURRSTATE",
+        status: "listening"
+      });
     }
   }
+
   closeMe(e) {
-    console.log("boobs");
     this.win.hide();
   }
+
   handleChange(event) {
     this.chat = {
       isFinal: false,
       isUser: true,
-      text: this.state.value
+      text: event.target.value
     }
-    this.setState({ value: event.target.value });
+    // this.setState({ value: event.target.value });
+    store.dispatch({
+      origin: "GRID",
+      type: "GRIDUSERINPUT",
+      GRIDUSERINPUT: event.target.value,
+    })
   }
+
   handleSubmit(event) {
-    // console.log(this.state.value);
+    console.log(event.target.value);
+    event.preventDefault();
     this.chat = {
       isFinal: true,
       isUser: true,
-      text: this.state.value
+      text: event.target.value
     }
-    event.preventDefault();
-    this.getResponce(this.state.value);
-    this.setState({ value: "" });
+    getResponce.getResponce(event.target.value);
+    store.dispatch({
+      origin: "GRID",
+      type: "GRIDUSERINPUT",
+      GRIDUSERINPUT: "",
+    })
   }
   render() {
-    if (this.state.status === 'listening') {
+    const state = store.getState();
+    if (state.status === 'listening') {
       getResponce.streamingMicDetectIntent();
       // getResponce.getResponce("turn on wi-fi");
     }
@@ -126,19 +120,19 @@ class Grid extends Component {
           </Row>
           <Row>
             <Col>
-              <Chat status={this.state.status} user={this.chat} system={this.system} />
+              <Chat status={state.status} user={this.chat} system={this.system} />
               {/* <Button onClick={this.changestate} >lol</Button> */}
             </Col>
           </Row>
           <Row>
-            <Col><GifHandler status={this.state.status} /></Col>
+            <Col><GifHandler status={state.status} /></Col>
           </Row>
         </Container>
         <Form onSubmit={this.handleSubmit}>
-          <Input id={"inputarea"} value={this.state.value} onChange={this.handleChange} placeholder="Speak or type here" />
+          <Input id={"inputarea"} value={state.GRIDUSERINPUT} onChange={this.handleChange} placeholder="Speak or type here" />
         </Form>
         <img src={settings} alt="settings" id={"settingsButton"} height={22} width={22} />
-        <img src={closeButton} alt="close" id={"closeButton"} height={22} width={22} onClick= {this.closeMe} />
+        <img src={closeButton} alt="close" id={"closeButton"} height={22} width={22} onClick={this.closeMe} />
       </div >
     );
   }

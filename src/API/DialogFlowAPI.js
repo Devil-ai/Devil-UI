@@ -10,6 +10,40 @@ const sampleRateHertz = 16000;
 const encoding = 'AUDIO_ENCODING_LINEAR16';
 
 
+
+function  getResponce(query) {
+  const dialogflow = window.require('dialogflow');
+  const sessionClient = new dialogflow.SessionsClient();
+  // Define session path
+  const sessionPath = sessionClient.sessionPath(projectId, sessionId);
+  const request = {
+    session: sessionPath,
+    queryInput: {
+      text: {
+        text: query,
+        languageCode: languageCode,
+      },
+    },
+  };
+
+  sessionClient
+    .detectIntent(request)
+    .then(responses => {
+      console.log('Detected intent');
+      const result = responses[0].queryResult;
+      console.log(result.fulfillmentMessages[0].text.text[0]);
+      this.system = {
+        isUser: false,
+        isFinal: true,
+        text: result.fulfillmentMessages[0].text.text[0],
+      }
+      this.setState({value: " "});
+      this.system = {};
+    })
+    .catch(err => {
+      console.error('ERROR:', err);
+    });
+}
 function streamingMicDetectIntent() {
   const dialogflow = window.require('dialogflow');
   const sessionClient = new dialogflow.SessionsClient();
@@ -108,5 +142,6 @@ function logQueryResult(sessionClient, result) {
   }
 }
 export default {
-  streamingMicDetectIntent
+  streamingMicDetectIntent,
+  getResponce
 };

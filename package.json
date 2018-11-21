@@ -13,10 +13,12 @@
     "dialogflow": "^0.7.0",
     "http2": "^3.3.7",
     "node-record-lpcm16": "^0.3.1",
+    "prop-types": "^15.6.2",
     "pump": "^3.0.0",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-gif": "^0.1.0",
+    "react-redux": "^5.1.1",
     "reactstrap": "^6.4.0",
     "redux": "^4.0.1",
     "through2": "^2.0.3"

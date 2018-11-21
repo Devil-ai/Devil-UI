@@ -1,22 +1,35 @@
-export default ((state, action)=>{
-    switch(action.origin){
+export default ((state, action) => {
+    switch (action.origin) {
         case "GRID":
-            switch(action.type){
+            switch (action.type) {
                 case "CURRSTATE":
                     return {
                         ...state,
-                        status: action.status,  
+                        status: action.status,
                     }
                 case "GRIDUSERINPUT":
                     return {
                         ...state,
-                        GRIDUSERINPUT: action.GRIDUSERINPUT,  
+                        GRIDUSERINPUT: action.GRIDUSERINPUT,
                     }
                 default:
-                    return state;       
+                    return state;
             }
         case "CHAT":
-            return state;
+            switch (action.type) {
+                case "USER":
+                    return {
+                        ...state,
+                        user: action.data,
+                    }
+                case "SYSTEM":
+                    return {
+                        ...state,
+                        system: action.data,
+                    }
+                default:
+                    return state;
+            }
         default:
             return state;
     }

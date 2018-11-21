@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './Grid.css';
+import PropTypes from "prop-types";
+
 
 class Chat extends Component {
 
@@ -19,19 +21,20 @@ class Chat extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.user !== {}) {
-            if (nextProps.user.isUser === true) {
-                if (nextProps.user.isFinal === true && nextProps.user.text !== "") {
-                    this.chat.push(nextProps.user);
+        const { user, system } = nextProps.store.getState();
+        if (user !== {}) {
+            if (user.isUser === true) {
+                if (user.isFinal === true && user.text !== "") {
+                    this.chat.push(user);
                     this.chat.push(this.dummyData);
                 } else {
-                    this.chat[this.chat.length - 1] = nextProps.user;
+                    this.chat[this.chat.length - 1] = user;
                 }
             }
         }
-        if (nextProps.system !== {}) {
-            if (nextProps.system.isUser === false) {
-                this.chat.push(nextProps.system);
+        if (system !== {}) {
+            if (system.isUser === false) {
+                this.chat.push(system);
                 this.chat.push(this.dummyData);
             }
         }
@@ -49,11 +52,13 @@ class Chat extends Component {
 
     render() {
         let chatItems = [];
+        let count = 0;
+        this.store = this.props.store;
         for (const element of this.chat) {
             if (typeof (element) !== "undefined") {
                 if (element.isUser === true) {
                     if (element.isFinal === true) {
-                        chatItems.push(<div class="user" >
+                        chatItems.push(<div className="user" key={++count}>
                             <strong>Utkarsh: </strong>
                             {element.text}
                         </div >);
@@ -61,7 +66,7 @@ class Chat extends Component {
                         this.chat[this.chat.length - 1].text = element.text;
                     }
                 } else if (element.isUser === false) {
-                    chatItems.push(<div class="system" >
+                    chatItems.push(<div className="system" key={++count}>
                         <strong>Devil: </strong>
                         {element.text}
                     </div >);
@@ -69,10 +74,14 @@ class Chat extends Component {
             }
         }
         return (
-            <div class="chatarea">
+            <div className="chatarea">
                 {chatItems}
             </div>
         );
     }
 }
+
+Chat.contextTypes = {
+    store: PropTypes.object
+};
 export default Chat;

@@ -8,6 +8,9 @@ import GifHandler from './GifHandler';
 import Chat from './Chat';
 import getResponce from '../API/DialogFlowAPI';
 import store from "../Store"
+import PropTypes from "prop-types";
+
+
 const process = window.require('process');
 const windowRemote = window.require('electron');
 
@@ -25,7 +28,6 @@ class Grid extends Component {
     process.env.GOOGLE_APPLICATION_CREDENTIALS = './devil-36d63-5166a7175387.json';
 
     this.chat = {};
-    this.system = {};
 
     this.win.on('blur', () => {
       // this.setState({ status: "sleeping" });
@@ -49,6 +51,11 @@ class Grid extends Component {
 
   componentDidUpdate() {
     this.chat = {}
+    // store.dispatch({
+    //   origin: "CHAT",
+    //   type: "USER",
+    //   data: {}
+    // });
   }
 
   changestate() {
@@ -89,24 +96,33 @@ class Grid extends Component {
   }
 
   handleSubmit(event) {
-    console.log(event.target.value);
+   const text = store.getState().GRIDUSERINPUT;
     event.preventDefault();
     this.chat = {
       isFinal: true,
       isUser: true,
-      text: event.target.value
+      text: text
     }
-    getResponce.getResponce(event.target.value);
+    store.dispatch({
+      origin: "CHAT",
+      type: "USER",
+      data:  {
+        isFinal: true,
+        isUser: true,
+        text: text
+      }
+    });
+    getResponce.getResponce(text,store);
     store.dispatch({
       origin: "GRID",
       type: "GRIDUSERINPUT",
       GRIDUSERINPUT: "",
-    })
+    });
   }
   render() {
     const state = store.getState();
     if (state.status === 'listening') {
-      getResponce.streamingMicDetectIntent();
+      // getResponce.streamingMicDetectIntent();
       // getResponce.getResponce("turn on wi-fi");
     }
     return (
@@ -120,7 +136,7 @@ class Grid extends Component {
           </Row>
           <Row>
             <Col>
-              <Chat status={state.status} user={this.chat} system={this.system} />
+              <Chat status={state.status} store={store}/>
               {/* <Button onClick={this.changestate} >lol</Button> */}
             </Col>
           </Row>
@@ -137,5 +153,7 @@ class Grid extends Component {
     );
   }
 }
-
+Grid.contextTypes = {
+  store: PropTypes.object
+};
 export default Grid;

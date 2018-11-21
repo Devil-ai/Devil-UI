@@ -10,8 +10,7 @@ const sampleRateHertz = 16000;
 const encoding = 'AUDIO_ENCODING_LINEAR16';
 
 
-
-function  getResponce(query) {
+function  getResponce(query, store) {
   const dialogflow = window.require('dialogflow');
   const sessionClient = new dialogflow.SessionsClient();
   // Define session path
@@ -32,13 +31,26 @@ function  getResponce(query) {
       console.log('Detected intent');
       const result = responses[0].queryResult;
       console.log(result.fulfillmentMessages[0].text.text[0]);
-      this.system = {
-        isUser: false,
-        isFinal: true,
-        text: result.fulfillmentMessages[0].text.text[0],
-      }
-      this.setState({value: " "});
-      this.system = {};
+      store.dispatch({
+        origin: "CHAT",
+        type: "USER",
+        data: {}
+      });
+      store.dispatch({
+        origin: "CHAT",
+        type: "SYSTEM",
+        data: {
+          isUser: false,
+          isFinal: true,
+          text: result.fulfillmentMessages[0].text.text[0],
+        }
+      });
+      store.dispatch({
+        origin: "CHAT",
+        type: "SYSTEM",
+        data: {}
+      });
+    
     })
     .catch(err => {
       console.error('ERROR:', err);
@@ -71,7 +83,6 @@ function streamingMicDetectIntent() {
     .on('error', console.error)
     .on('data', data => {
       if (typeof (data.recognitionResult) !== "undefined") {
-        console.log(`${data.recognitionResult.transcript}`);
         console.log(data);
       } else {
         console.log(`Detected intent:`);

@@ -7,6 +7,7 @@ import './Grid.css';
 import GifHandler from './GifHandler';
 import Chat from './Chat';
 import getResponce from '../API/DialogFlowAPI';
+import Speech from '../API/Speech';
 import store from "../Store"
 import PropTypes from "prop-types";
 
@@ -103,16 +104,7 @@ class Grid extends Component {
       isUser: true,
       text: text
     }
-    store.dispatch({
-      origin: "CHAT",
-      type: "USER",
-      data:  {
-        isFinal: true,
-        isUser: true,
-        text: text
-      }
-    });
-    getResponce.getResponce(text,store);
+    getResponce(text,store);
     store.dispatch({
       origin: "GRID",
       type: "GRIDUSERINPUT",
@@ -122,8 +114,7 @@ class Grid extends Component {
   render() {
     const state = store.getState();
     if (state.status === 'listening') {
-      // getResponce.streamingMicDetectIntent();
-      // getResponce.getResponce("turn on wi-fi");
+      Speech(store);
     }
     return (
       <div id="App">

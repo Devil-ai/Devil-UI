@@ -1,8 +1,21 @@
+import dostuff from './DoStuff'
+// import assistant from './assistant';
+const { exec } = window.require('child_process');
+
 const projectId = 'devil-36d63';
 const sessionId = 'AIzaSyBiJcs0FYCHTc5C95L29lfVuOWgE1GPqVg';
 const languageCode = 'en-US';
 
-function  getResponce(query, store) {
+function getResponce(query, store) {
+  store.dispatch({
+    origin: "CHAT",
+    type: "USER",
+    data: {
+      isFinal: true,
+      isUser: true,
+      text: query,
+    }
+  });
   const dialogflow = window.require('dialogflow');
   const sessionClient = new dialogflow.SessionsClient();
   // Define session path
@@ -16,27 +29,16 @@ function  getResponce(query, store) {
       },
     },
   };
-
   sessionClient
     .detectIntent(request)
     .then(responses => {
-      console.log('Detected intent');
-      const result = responses[0].queryResult;
-      console.log(result.fulfillmentMessages[0].text.text[0]);
-      store.dispatch({
-        origin: "CHAT",
-        type: "USER",
-        data:  {
-          isFinal: true,
-          isUser: true,
-          text: query,
-        }
-      });
       store.dispatch({
         origin: "CHAT",
         type: "USER",
         data: {}
       });
+      const result = responses[0].queryResult;
+
       store.dispatch({
         origin: "CHAT",
         type: "SYSTEM",
@@ -46,12 +48,13 @@ function  getResponce(query, store) {
           text: result.fulfillmentMessages[0].text.text[0],
         }
       });
+      exec("espeak '"+result.fulfillmentMessages[0].text.text[0]+"'")
+      dostuff(result.intent, result.parameters.fields, store);
       store.dispatch({
         origin: "CHAT",
         type: "SYSTEM",
         data: {}
       });
-    
     })
     .catch(err => {
       console.error('ERROR:', err);

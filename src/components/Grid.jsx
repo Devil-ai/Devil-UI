@@ -7,9 +7,10 @@ import './Grid.css';
 import GifHandler from './GifHandler';
 import Chat from './Chat';
 import getResponce from '../API/DialogFlowAPI';
-import Speech from '../API/Speech';
+// import Speech from '../API/watsonSpeech';
 import store from "../Store"
 import PropTypes from "prop-types";
+const { exec } = window.require('child_process');
 
 
 const process = window.require('process');
@@ -52,15 +53,32 @@ class Grid extends Component {
 
   componentDidUpdate() {
     this.chat = {}
-    // store.dispatch({
-    //   origin: "CHAT",
-    //   type: "USER",
-    //   data: {}
-    // });
+    const state = store.getState();
+    if (state.status === 'listening') {
+      // exec("python2.7 ./scripts/stt.py", function (error, stdout, stderr) {
+      //   // console.log(error, stdout, stderr);
+      //   getResponce(stdout, store);
+      //   store.dispatch({
+      //     origin: "CHAT",
+      //     type: "USER",
+      //     data: {
+      //       isFinal: true,
+      //       isUser: true,
+      //       text: stdout,
+      //     }
+      //   });
+      //   store.dispatch({
+      //     origin: "GRID",
+      //     type: "CURRSTATE",
+      //     status: "sleeping"
+      //   });
+      // });
+
+    }
   }
 
   changestate() {
-    if (this.state.status === "listening") {
+    if (store.getState().status === "listening") {
       // this.setState({ status: "sleeping" });
       store.dispatch({
         origin: "GRID",
@@ -97,28 +115,28 @@ class Grid extends Component {
   }
 
   handleSubmit(event) {
-   const text = store.getState().GRIDUSERINPUT;
+    const text = store.getState().GRIDUSERINPUT;
     event.preventDefault();
-    this.chat = {
-      isFinal: true,
-      isUser: true,
-      text: text
-    }
-    getResponce(text,store);
+    // this.chat = {
+    //   isFinal: true,
+    //   isUser: true,
+    //   text: text
+    // }
+
     store.dispatch({
       origin: "GRID",
       type: "GRIDUSERINPUT",
       GRIDUSERINPUT: "",
     });
+    getResponce(text, store);
   }
   render() {
     const state = store.getState();
-    if (state.status === 'listening') {
-      Speech(store);
-    }
+
     return (
       <div id="App">
-        <Container id={"APP"}>
+
+          <Container id={"APP"}>
           <Row>
             <Col><br /><img src={logo} alt="devil" id={"anim"} height={100} width={100} /> </Col>
           </Row>
@@ -127,7 +145,7 @@ class Grid extends Component {
           </Row>
           <Row>
             <Col>
-              <Chat status={state.status} store={store}/>
+              <Chat status={state.status} store={store} />
               {/* <Button onClick={this.changestate} >lol</Button> */}
             </Col>
           </Row>

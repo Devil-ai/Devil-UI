@@ -8,28 +8,31 @@ const url = require('url');
 
 let mainWindow;
 
-// const detectorData = {
-//     resource: '../node_modules/snowboy/resources/common.res'
-// };
-// const modelData = [
-//     {
-//         file: './Hi_devil.pmdl',
-//         hotwords: 'Hi Devil',
-//         sensitivity: '0.3'
-//     }
-// ];
-// const recorderData = {
-//     audioGain: 2,
-// };
-// const logger = console;
+const detectorData = {
+    resource: '../node_modules/snowboy/resources/common.res'
+};
+const modelData = [
+    {
+        file: './Hi_devil.pmdl',
+        hotwords: 'Hi Devil',
+        sensitivity: '0.3'
+    }
+];
+const recorderData = {
+    audioGain: 2,
+};
+const logger = console;
 // let hotwordDetector =  new HotwordDetector(detectorData, modelData, recorderData, logger);
 function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
+        nodeIntegration: 'iframe',
+        webPreferences: {
+            webSecurity: false
+        },
         width: 500,
         height: 800,
         frame: false,
-        // vibrancy: 'ultra-dark',
         alwaysOnTop: true,
         maximizable: false,
         minimizable: false,
@@ -53,21 +56,15 @@ function createWindow() {
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {
-        // Dereference the window object, usually you would store windows
-        // in an array if your app supports multi windows, this is the time
-        // when you should delete the corresponding element.
         mainWindow = null
     })
-    // mainWindow.on('blur', function () {
-    //     mainWindow.hide();
-    // })
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
-
+app.commandLine.appendSwitch('disable-web-security');
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
     // On OS X it is common for applications and their menu bar
@@ -108,7 +105,7 @@ app.on('ready', () => {
     //     console.log('hotwordDetector: Hotword detected: ' + hotword);
     //     mainWindow.show();
     // });
-    // // hotwordDetector.on('silence', function() {
+    // hotwordDetector.on('silence', function() {
     //     console.log('hotwordDetector: silence');
     //   });
     //   // Triggered when there is audible sound being recorded.
@@ -116,7 +113,7 @@ app.on('ready', () => {
     //     // Buffer is the most recent section from the audio buffer.
     //     console.log('hotwordDetector: sound: ' + buffer);
     //   });
-    console.log(globalShortcut.isRegistered('CommandOrControl+X'));
+    // console.log(globalShortcut.isRegistered('CommandOrControl+X'));
 })
 
 //   Triggered when there is no audible sound being recorded.
